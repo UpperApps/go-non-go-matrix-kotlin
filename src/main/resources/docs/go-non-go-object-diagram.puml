@@ -1,0 +1,130 @@
+@startuml
+'https://plantuml.com/object-diagram
+!theme vibrant
+left to right direction
+title Object Diagram - goal
+
+object user {
+  name = "Rodrigo"
+}
+
+object goal{
+  name = "Purchase a house"
+  description = "Purchase of a new house in Calgary"
+}
+
+object criteria.1 {
+  description = "The price of the house should be less than $500,000"
+  weight = 10
+}
+
+object criteria.2 {
+  description = "The house should have at least 3 bedrooms"
+  weight = 7
+}
+
+object criteria.3 {
+  description = "The house must have a finished basement"
+  weight = 5
+}
+
+object itemToEvaluate.1 {
+  name = "House in Legacy"
+}
+
+object itemToEvaluate.2 {
+  name = "House in Mahogany"
+}
+
+map itemScore.1 {
+  score => 10
+  criteria *---> criteria.1
+  ratedItem *--> itemToEvaluate.1
+}
+
+map itemScore.2 {
+  score => 7
+  criteria *---> criteria.2
+  ratedItem *--> itemToEvaluate.1
+}
+
+map itemScore.3 {
+  score => 7
+  criteria *---> criteria.3
+  ratedItem *--> itemToEvaluate.1
+}
+
+map itemScore.4 {
+  score => 10
+  criteria *---> criteria.1
+  ratedItem *--> itemToEvaluate.2
+}
+
+map itemScore.5 {
+  score => 7
+  criteria *---> criteria.2
+  ratedItem *--> itemToEvaluate.2
+}
+
+map itemScore.6 {
+  score => 9
+  criteria *---> criteria.3
+  ratedItem *--> itemToEvaluate.2
+}
+
+json judgementMatrix{
+    "matrix" : [
+        {
+            "criteria_to_be_rated" : "Criteria.1",
+            "criteria_to_compare" : "Criteria.1",
+            "priority_on" : "Criteria.1",
+            "score" :  1
+        },
+        {
+            "criteria_to_be_rated" : "Criteria.1",
+            "criteria_to_compare" : "Criteria.2",
+            "priority_on" : "Criteria.1",
+            "score" :  2
+        },
+        {
+            "criteria_to_be_rated" : "Criteria.1",
+            "criteria_to_compare" : "Criteria.3",
+            "priority_on" : "Criteria.3",
+            "score" :  0.5
+        },
+        {
+            "criteria_to_be_rated" : "Criteria.2",
+            "criteria_to_compare" : "Criteria.1",
+            "priority_on" : "Criteria.2",
+            "score" :  0.5
+        },
+        {
+            "criteria_to_be_rated" : "Criteria.2",
+            "criteria_to_compare" : "Criteria.2",
+            "priority_on" : "Criteria.3",
+            "score" :  1
+        },
+        {
+            "criteria_to_be_rated" : "Criteria.2",
+            "criteria_to_compare" : "Criteria.3",
+            "priority_on" : "Criteria.3",
+            "score" :  0.5
+        }
+    ]
+}
+note top of judgementMatrix
+    The judgement matrix is used to compare the criteria and assign a priority score to each "Criteria.1".
+
+    **The rules are:**
+    - If the criteria_to_be_rated **is the same** of the criteria_to_compare, the priority score is 1.
+    - If the criteria_to_be_rated **has higher priority over** the criteria_to_compare, the priority score is 2.
+    - If the criteria_to_be_rated **has lower priority over** the criteria_to_compare, the priority score is 0.5.
+end note
+
+user -[#blue]-> goal
+goal -[#red]--> criteria.1
+goal -[#red]--> criteria.2
+goal -[#red]--> criteria.3
+judgementMatrix -[#red]--> goal
+
+@enduml

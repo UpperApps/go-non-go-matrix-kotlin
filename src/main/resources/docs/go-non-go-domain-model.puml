@@ -1,0 +1,88 @@
+@startuml Go-Non-Go Domain Model
+'https://plantuml.com/class-diagram
+'left to right direction
+skinparam linetype ortho
+!theme vibrant
+
+' TODO Finish the domain class model.
+class User {
+    -id: UUID
+    -name: String
+    -email: String
+    -password: String
+    -createdAt: LocalDateTime
+    -updatedAt: LocalDateTime
+}
+
+class Goal {
+    -id: UUID
+    -name: String
+    -description: String
+    -maxScore: Integer
+    -createdAt: LocalDateTime
+    -updatedAt: LocalDateTime
+    -criteria: List<Criteria>
+    -itemToEvaluate: List<ItemToEvaluate>
+}
+
+class Criteria {
+    -id: UUID
+    -description: String
+    -weight: Integer
+    -createdAt: LocalDateTime
+    -updatedAt: LocalDateTime
+}
+
+class ItemToEvaluate {
+    -id: UUID
+    -name: String
+    -description: String
+    -createdAt: LocalDateTime
+    -updatedAt: LocalDateTime
+}
+
+class JudgementMatrix {
+    -id: UUID
+    -criteriaToBeRated: Criteria
+    -criteriaToCompare: Criteria
+    -priority_on: Integer
+    -socore: Integer
+    -createdAt: LocalDateTime
+    -updatedAt: LocalDateTime
+}
+
+class JudgementMatrixList {
+    -judgementMatrix: List<JudgementMatrix>
+    --
+    +createMatrix()
+}
+
+class ItemScore {
+    -id: UUID
+    -itemToEvaluate: ItemToEvaluate
+    -criteriaScore: Map<Criteria, Integer>
+    -createdAt: LocalDateTime
+    -updatedAt: LocalDateTime
+    --
+    +calculateTotalScore()
+    +normalizeScore()
+}
+
+class GoalScore {
+    -goal: Goal
+    -itemScore: List<ItemScore>
+    --
+    +calculateFinalScore()
+}
+
+User "1" -- "0..*" Goal
+Goal "1" -- "0..*" Criteria
+Goal "1" -- "0..*" ItemToEvaluate
+JudgementMatrix "1" --* "2" Criteria
+ItemScore "1" ---* "1..*" Criteria
+ItemScore "1" --- "1" ItemToEvaluate
+JudgementMatrixList "1" --* "1..*" JudgementMatrix
+GoalScore "1" -- "1" Goal
+GoalScore "1" ---* "1..*" ItemScore
+
+@enduml

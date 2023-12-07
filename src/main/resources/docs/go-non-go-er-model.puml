@@ -1,0 +1,85 @@
+@startuml
+'https://plantuml.com/ie-diagram
+!theme vibrant
+left to right direction
+skinparam linetype ortho
+title "Relational Database Schema"
+
+entity "User" as user {
+    * id [PK] : UUID
+    --
+    * name : string
+    * email : string
+    * password : string
+    * created_at : datetime
+    + updated_at : datetime
+}
+
+entity "Goal" as goal {
+    * id [PK] : UUID
+    --
+    * name : string
+    + description : string
+    * max_score : integer
+    * created_at : datetime
+    + updated_at : datetime
+    --
+    * user_id [FK]
+}
+
+entity "Criteria" as criteria {
+    * id [PK] : UUID
+    --
+    * description : string
+    + weight : integer
+    * created_at : datetime
+    + updated_at : datetime
+    --
+    * goal_id [FK]
+}
+
+entity "Judgement Matrix" as judgement_matrix {
+    * id [PK] : UUID
+    --
+    * priority_on : UUID
+    * score : integer
+    * created_at : datetime
+    + updated_at : datetime
+    --
+    * criteria_to_be_rated [FK]
+    * criteria_to_compare [FK]
+    * criteria_pair_uk(criteria_to_be_rated,criteria_to_compare) [UNIQUE]
+}
+
+entity "Item to Evaluate" as item_to_evaluate {
+    * id [PK] : UUID
+    --
+    * name : string
+    + description : string
+    * created_at : datetime
+    + updated_at : datetime
+    --
+    * goal_id [FK]
+}
+
+entity "Item Scores" as item_scores {
+    * id [PK] : UUID
+    --
+    * score : integer
+    * created_at : datetime
+    + updated_at : datetime
+    --
+    * item_to_evaluate_id [FK]
+    * criteria_id [FK]
+    * item_to_evaluate_uk(item_to_evaluate_id,criteria_id) [UNIQUE]
+}
+
+user ||--o{ goal
+goal ||--o{ criteria
+criteria ||--o{ judgement_matrix
+criteria ||--o{ judgement_matrix
+goal ||--o{ item_to_evaluate
+item_to_evaluate ||--o{ item_scores
+criteria ||--o{ item_scores
+
+@enduml

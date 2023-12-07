@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+!theme vibrant
+title Go-Non-Go Materix Basic Flow
+
+start
+:Create a Goal;
+repeat :Create each Criteria;
+:Define a description;
+:Define a weight (optional);
+repeat while (All criteria defined?)
+
+:Create the Judgement Matrix;
+repeat :For each pair in the matrix:;
+:Check if the criteria to be rated is more important
+than the criteria to compare;
+switch (Criteria to be rated)
+case ( is the same as the one being compared )
+  :Weigth = 1;
+case ( is more important than the one being compared )
+  :Weight = 2;
+case ( is less important than the one being compared )
+  :Weight = 0.5;
+case ()
+endswitch
+repeat while (All Alternatives classified?)
+:Calculate the final score for each criteria;
+:Apply the weights (optional);
+:Normalize the scores;
+repeat :Input the items to be evaluated. For each item:;
+:Give a score to each criteria;
+:Normalize the scores;
+:Calculate the final score for each item;
+repeat while (All items rated?)
+:Save the current results;
+:(optional) Save the history of results as a scenario
+that can be restored later for comparison;
+
+
+stop
+
+@enduml

@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: go-non-go-matrix-mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=go-non-go-matrix
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      - ~/Repositories/Personal/docker/go-non-go-matrix/volumes:/data/db
+    ports:
+      - 27017:27017
