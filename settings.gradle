@@ -8,4 +8,4 @@ pluginManagement {
         id "${quarkusPluginId}" version "${quarkusPluginVersion}"
     }
 }
-rootProject.name='go-non-go-matrix'
+rootProject.name='go-non-go-matrix-kotlin'
